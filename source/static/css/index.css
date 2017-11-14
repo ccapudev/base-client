@@ -1,0 +1,28 @@
+.curso {
+  padding: 15px;
+}
+.curso h1 {
+  margin: 0;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  cursor: pointer;
+}
+.curso .head {
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+.comentario {
+  padding: 5px;
+  margin: 0;
+  margin-bottom: 10px;
+}
+.comentario .subcomments {
+  cursor: pointer;
+  padding-left: 30px;
+}
+.comentario .subcomments a {
+  color: #009;
+}
