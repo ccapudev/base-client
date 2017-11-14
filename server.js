@@ -20,10 +20,14 @@ var TEMPLATE_DIR = __dirname + "/source/templates/";
 var API_PORT = 3000;
 server.use(middlewares)
 server.use(router)
+
+const API_URL = `http://localhost:${API_PORT}/`;
+
 server.listen(API_PORT, () => {
-	console.log("JSON Server running => "+
-				`http://localhost:${API_PORT}/`);
+	console.log("JSON Server running => "+API_URL);
 })
+
+
 
 
 // Swig Render Config and Functions
@@ -67,6 +71,7 @@ swig.setDefaults({
 	},
 	loader: swig.loaders.fs('./source/templates/'),
 	locals: {
+		API_URL:API_URL,
 		STATIC_URL : STATIC_URL,
 		BUILD_ID : makeid()
 	}
