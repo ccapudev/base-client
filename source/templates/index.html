@@ -16,26 +16,35 @@
 					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
 						<span aria-hidden="true">&times;</span>
 					</button>
-					<h4 class="modal-title">Modal title</h4>
+					<h4 class="modal-title">Comentarios</h4>
 				</div>
 				<div class="modal-body">
 					<div class="comentario" v-for="comment in comments" v-if="comment.commentId === null">
 						<p v-text="comment.body"></p>
-						<div class="subcomments" v-if="comment.comments.length > 0">
-							<a v-if="!comment.expanded" @click="expandComment(comment)">Mostrar repuestas de este comentario</a>
-							<div v-else="" class="comentario" v-for="subcom in comment.comments">
-								<p v-text="subcom.body"></p>
+						<div class="subcomments">
+							<div  v-if="comment.comments.length > 0">
+								<a v-if="!comment.expanded" @click="expandComment(comment)">Mostrar repuestas de este comentario</a>
+								<div v-else="" class="comentario" v-for="subcom in comment.comments">
+									<p v-text="subcom.body"></p>
+								</div>
 							</div>
 							<div class="responder form-group">
-								<input type="text" placeholder="Responder" class="form-control">
-								
+								<input type="text" placeholder="Responder" class="form-control" 
+								@keyup.enter="sendComment(comment)"
+								@input="e=>wCommentForComment(e,comment)">
 							</div>
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
+					<div class="responder form-group">
+						<input type="text" placeholder="Responder" class="form-control" 
+						@keyup.enter="sendCommentPost()"
+						@input="e=>wPostComment(e)">
+					</div>
+				</div>
+				<div class="modal-footer">
 					<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-					<button type="button" class="btn btn-primary">Save changes</button>
 				</div>
 			</div>
 		</div>
@@ -47,8 +56,10 @@
 	const vApp = new Vue({
 		el:'#vAppContent',
 		data:{
+			post:null,
 			posts:[],
-			comments:[]
+			comments:[],
+			comment_forsend:{}
 		},
 		mounted(){
 			this.getPosts()
@@ -60,6 +71,7 @@
 				})
 			},
 			getComments(post){
+				this.post = post;
 				this.$axios.get('/comments',{
 					params:{
 						postId:post.id,
@@ -72,6 +84,49 @@
 			},
 			expandComment(comment){
 				Vue.set(comment,'expanded',true);
+			},
+			wCommentForComment(e,comment){
+				this.comment_forsend[comment.id+'_ctarget'] = e;
+				this.comment_forsend[comment.id] = {
+					postId:comment.postId,
+					commentId:comment.id||null,
+					body:e.target.value
+				}
+			},
+			wPostComment(e){
+				this.comment_forsend[this.post.id+'_ptarget'] = e;
+				this.comment_forsend[this.post.id+'_post'] = {
+					postId:this.post.id,
+					commentId:null,
+					body:e.target.value
+				}
+			},
+			sendComment(comment){
+				let comentario = this.comment_forsend[comment.id]
+				if(comentario && comentario.body){
+					this.$axios.post('/comments',comentario)
+					.then(rst => {
+						comment.comments.push(rst.data);
+						e = this.comment_forsend[comment.id+'_ctarget'];
+						e.target.value='';
+						delete this.comment_forsend[comment.id]
+						delete this.comment_forsend[comment.id+'_ctarget']
+					})				
+				}
+			},
+			sendCommentPost(){
+				let comentario = this.comment_forsend[this.post.id+'_post']
+				if(comentario && comentario.body){
+					this.$axios.post('/comments',comentario)
+					.then(rst => {
+						rst.data["comments"] = []
+						this.comments.push(rst.data);
+						e = this.comment_forsend[this.post.id+'_ptarget'];
+						e.target.value='';
+						delete this.comment_forsend[this.post.id+'_post']
+						delete this.comment_forsend[this.post.id+'_ptarget']
+					})				
+				}
 			}
 		}
 	})
