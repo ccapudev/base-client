@@ -29,7 +29,7 @@
 								</div>
 							</div>
 							<div class="responder form-group">
-								<input type="text" placeholder="Responder" class="form-control" 
+								<input type="text" placeholder="Escriba un respuesta a este comentario" class="form-control" 
 								@keyup.enter="sendComment(comment)"
 								@input="e=>wCommentForComment(e,comment)">
 							</div>
@@ -38,7 +38,7 @@
 				</div>
 				<div class="modal-footer">
 					<div class="responder form-group">
-						<input type="text" placeholder="Responder" class="form-control" 
+						<input type="text" placeholder="Escriba un comentario para este post" class="form-control" 
 						@keyup.enter="sendCommentPost()"
 						@input="e=>wPostComment(e)">
 					</div>

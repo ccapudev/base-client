@@ -2,24 +2,55 @@
   "posts": [
     {
       "id": 1,
-      "title": "json-server",
+      "title": "Descargando JSON-Server",
       "author": "typicode"
+    },
+    {
+      "title": "Configurando JSON-Server",
+      "author": "typicode",
+      "id": 2
+    },
+    {
+      "title": "Aplicando Metodologias con JSON-Server",
+      "author": "typicode",
+      "id": 2
     }
   ],
   "comments": [
     {
-      "id": 1,
-      "body": "One comment",
+      "id": 2,
+      "commentId": null,
+      "body": "Comentario A1",
       "postId": 1
     },
     {
-      "id": 2,
-      "body": "other comment",
+      "id": 5,
+      "commentId": 2,
+      "body": "Comentario A1.1",
+      "postId": 1
+    },
+    {
+      "id": 6,
+      "commentId": 2,
+      "body": "Comentario A1.2",
+      "postId": 1
+    },
+    {
+      "id": 7,
+      "commentId": 2,
+      "body": "Comentario A1.3",
       "postId": 1
     },
     {
       "id": 3,
-      "body": "last comment",
+      "commentId": null,
+      "body": "Comentario B1",
+      "postId": 1
+    },
+    {
+      "id": 8,
+      "commentId": 3,
+      "body": "Comentario B1.1",
       "postId": 1
     }
   ],
